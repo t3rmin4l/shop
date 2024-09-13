@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Product Comparison</title>
+    <style>
+        th, td { vertical-align: top; }
+    </style>
+</head>
+<body>
+    <h1>Product Comparison</h1>
+    <table>
+        <tbody>
+            <tr>
+                {% for product in products %}
+                    <td>
+                        <strong>{{ product.productNameShort }}</strong> <br />
+                        {% for attribute in product.productAttributes %}
+                            {{ attribute.attributeValue|slice(0, 50) }} <br />
+                        {% endfor %}
+                    </td>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

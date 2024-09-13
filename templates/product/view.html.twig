@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <section class="section">
+        <div class="container">
+            <div class="columns is-multiline">
+                <div class="column filters is-half">
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image">
+                                <img src="{{ product.imageUrl }}" alt="{{ product.productNameShort }}">
+                            </figure>
+                        </div>
+                    </div>
+                    <div class="has-text-centered">
+                        <a class="button mt-1 is-warning is-medium" href="{{ path('export', { id: product.id }) }}">Export</a>
+                    </div>
+                </div>
+                <div class="column is-half">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-content">
+                                <p class="title is-4">{{ product.productNameShort }}</p>
+                                <p class="title is-6 has-text-grey">
+                                    {% for attribute in product.productAttributes %}
+                                        <hr />
+                                        {{ attribute.attributeName }}: {{ attribute.attributeValue }}
+                                    {% endfor %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

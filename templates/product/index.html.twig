@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="columns is-multiline">
+        <div class="column filters is-one-quarter">
+            {{ form_start(searchForm) }}
+                {% for field in searchForm %}
+                    {{ form_widget(field) }}
+                {% endfor %}
+            {{ form_end(searchForm) }}
+
+            <div class="mb-2"></div>
+
+            {{ form_start(filterForm) }}
+                {% for field in filterForm %}
+                    {{ form_widget(field) }}
+                {% endfor %}
+            {{ form_end(filterForm) }}
+        </div>
+        <div class="column is-three-quarters">
+            <div class="columns is-multiline">
+                {% for product in products %}
+                    <div class="column is-one-third">
+                        <a href="{{ path('product', { id: product.id, slug: product.slug }) }}">
+                            <div class="card">
+                                <div class="card-image">
+                                    <figure class="image is-4by3">
+                                        <img src="{{ product.imageUrl }}" alt="{{ product.productNameShort }}">
+                                    </figure>
+                                </div>
+                                <div class="card-content">
+                                    <div class="media">
+                                        <div class="media-content">
+                                            {% set wattage = 'N/A' %}
+                                            {% for attribute in product.productAttributes %}
+                                                {% if attribute.attributeName == 'Wattage' %}
+                                                    {% set wattage = attribute.attributeValue %}
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            <p class="title is-6">{{ product.productNameShort }}</p>
+                                            <p class="title is-7 has-text-grey">
+                                                EAN: {{ product.eanNumber }} <br />
+                                                Wattage: {{ wattage }}
+                                            </p>
+                                            {% if product.id in comparedProducts %}
+                                                <a class="button mt-2 is-danger" href="{{ path('remove_from_compare', { id: product.id }) }}">-compare</a>
+                                            {% else %}
+                                                <a class="button mt-2 is-warning" href="{{ path('add_to_compare', { id: product.id }) }}">+compare</a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="column">
+                        <p>No products found.</p>
+                    </div>
+                {% endfor %}
+            </div>
+
+            {% if totalPages > 1 %}
+                <nav class="pagination" role="navigation" aria-label="pagination">
+                    <ul class="pagination-list">
+                        {% for i in 1..totalPages %}
+                            <li>
+                                <a class="pagination-link mt-4 {% if i == currentPage %}is-current{% endif %}" href="{{ path('list_of_products', {'page': i}|merge(filters)) }}">
+                                    {{ i }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
