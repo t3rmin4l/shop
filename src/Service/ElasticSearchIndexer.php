@@ -19,7 +19,7 @@ class ElasticSearchIndexer
 
     public function indexProduct(Product $product): void
     {
-        $this->deleteProduct($product->getId());
+        //$this->deleteProduct($product->getId());
 
         $params = [
             'index' => 'products',
